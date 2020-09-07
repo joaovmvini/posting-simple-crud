@@ -1,9 +1,9 @@
-import { createConnection, ConnectionOptions } from "typeorm";
-import connectionConfig from "./database/config";
+import { createConnection } from "typeorm";
 
-(async function main() {
-  const connection = await createConnection(
-    <ConnectionOptions>connectionConfig
-  );
-  console.log("successfully connected to the database");
-})();
+createConnection()
+  .then((connection) => {
+    console.log("Connected to database...");
+  })
+  .catch((err) => console.log(err));
+
+import "./server";

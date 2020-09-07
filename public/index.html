@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Network Crud</title>
+    <link rel="stylesheet" type="text/css" href="./styles/index.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <form class="user-form" method="POST">
+      <h2>Create a new user</h2>
+      <div class="input-box">
+        <label for="username">Username</label>
+        <input type="text" name="" id="username" />
+      </div>
+
+      <div class="input-box">
+        <label for="username">Email Address</label>
+        <input type="text" name="" id="email" />
+      </div>
+
+      <div class="input-box">
+        <label for="username">Password</label>
+        <input type="password" name="" id="password" />
+      </div>
+      <div class="input-box">
+        <label for="username">Age</label>
+        <input type="text" name="" id="age" />
+      </div>
+
+      <input type="button" value="Enviar" id="btnInput" />
+    </form>
+    <div class="show-data">
+      <strong>User data from db</strong>
+      <div class="user-data"></div>
+    </div>
+  </body>
+  <script src="js/index.js"></script>
+</html>

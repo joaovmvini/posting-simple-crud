@@ -1,0 +1,11 @@
+{
+  "type": "your database type",
+  "host": "your host",
+  "port": "your database access port",
+  "username": "your database username",
+  "password": "your database password",
+  "synchronize": true,
+  "entities": ["src/entity/*.ts"],
+  "migrations": ["migration/*.ts"],
+  "cli": { "migrationsDir": "migration" }
+}
