@@ -18,6 +18,6 @@ export class User {
   @Column({ length: 40 })
   password: string;
 
-  @OneToMany((target) => Post, (post) => post.user)
+  @OneToMany((target) => Post, (post) => post.user, { cascade: true })
   posts: Post[];
 }

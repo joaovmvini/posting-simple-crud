@@ -3,8 +3,6 @@ import { User } from "../entity/User";
 
 export class UserController {
   async insertUser(req, res) {
-    console.log(req.body, typeof req.body);
-
     const userRepository = getConnection("default").getRepository(User);
 
     const { username, email, password, age } = req.body;
@@ -15,15 +13,31 @@ export class UserController {
     user.password = password;
     user.age = age;
 
-    const isNewUser = (await userRepository.findOne({ email: email }))
-      ? false
-      : true;
+    const newUser = await userRepository.findOne({ email: email });
 
-    if (!isNewUser) {
+    if (newUser) {
       return res.send({ status: 404 });
     }
 
-    await userRepository.save(user);
-    return res.send(user);
+    const userFromDb = await userRepository.save(user);
+    return res.send(userFromDb);
+  }
+
+  async login(req, res) {
+    const userRepository = getConnection("default").getRepository(User);
+    const { email, password } = req.body;
+    const userFromDb = await userRepository.find({
+      relations: ["posts"],
+      where: { email: email, password: password },
+    }); //await userRepository.findOne({
+    //   email: email,
+    //   password: password,
+    // });
+
+    const error = { status: 404 };
+
+    // const userPosts = await userRepository.find({ relations: ["posts"], where: { id: userFromDb.id }});
+
+    return !userFromDb.length ? res.send(error) : res.send(userFromDb[0]);
   }
 }

@@ -1,11 +1,16 @@
+/* global nivel */
+
 :root {
-  --black: #fff;
+  --white: #fff;
+  --blue: #1a73c7;
+  --lightgrey: #eee;
 }
 
 html,
 body {
-  width: 100vw;
-  height: 100vh;
+  overflow: hidden;
+  width: 100vw !important;
+  height: 100vh !important;
   margin: 0;
   padding: 0;
 
@@ -20,6 +25,8 @@ body {
 * {
   font-family: "Roboto", sans-serif;
 }
+
+/* form style */
 
 .input-box {
   display: flex;
@@ -38,10 +45,11 @@ body {
   height: 300px;
   width: 300px;
   justify-content: center;
-  background: var(--black);
+  background: var(--white);
 }
 
-.user-form input {
+.user-form input,
+.user-content-box input {
   margin-top: 10px;
   width: 250px;
   outline: none;
@@ -52,51 +60,199 @@ body {
 }
 
 input::placeholder {
-  font-size: 1rem;
-  color: black;
-  font-weight: 600pt;
+  font-size: 0.9rem;
+  font-weight: bold;
 }
 
-.user-form input[type="button"] {
+.user-form input[type="button"],
+.user-content-box .new-post input[type="button"] {
   padding: 8px 30px;
-  background: #1a73c7;
+  background: var(--blue);
   border-radius: 2.5px;
   border: none;
   color: #fff;
   cursor: pointer;
 }
 
+/* user-details style */
+
 .show-data {
-  padding: 100px;
-  width: 300px;
-  height: 300px;
+  width: 100vw;
+  height: 100vh;
+  min-width: 320px;
+  min-height: 580px;
   margin: auto;
-  background: var(--black);
+  box-sizing: border-box;
+  background: var(--white);
   color: black;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-details-box {
+  background: var(--blue);
+  height: 70px;
+  border-bottom: 1px solid black;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.user-details-box .user-profile,
+.post .user-profile {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--lightgrey);
+  margin-left: 10px;
+  margin-top: 10px;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+}
+
+.user-profile span {
+  font-size: 45px;
+  color: var(--blue);
+  margin: auto;
+}
+
+.user-details-box .user-details {
+  width: 200px;
+  height: 50px;
+  margin-top: 8px;
+  text-align: left;
+  margin-left: 8px;
+}
+.user-details-box .user-details span {
+  display: block;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+/* user post area style */
+
+.user-content-box {
+  width: 100%;
+  height: calc(100% - 70px);
+  display: flex;
+  background: #eee;
+}
+
+.user-content-box .new-post {
+  text-align: center;
+  border-right: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.user-content-box .new-post,
+.user-content-box .current-posts {
+  width: 50%;
+  height: 100%;
+  background: var(--white);
+}
+
+/* new post css */
+
+textarea {
+  min-width: 70%;
+  min-height: 100px;
+}
+
+.heading-span {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1a73c7;
+}
+.user-content-box .new-post input[type="button"] {
+  margin-top: 15px;
+}
+
+/* current posts css */
+
+.user-content-box .current-posts {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.show-data strong {
-  margin-bottom: 15px;
-}
-.show-data .user-data {
-  max-width: 350px;
-  max-height: 400px;
-  min-width: 300px;
-  min-height: 350px;
-  background: #eee;
+#all-posts {
+  min-width: 70%;
+  min-height: 70%;
+  max-width: 300px;
+  background: #fff;
   overflow-y: scroll;
+  background: var(--blue);
 }
+
+.post {
+  width: 100%;
+  min-height: 70px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.post .post-title {
+  text-align: center;
+  max-width: 90%;
+  margin-bottom: 5px;
+  margin-top: 8px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--white);
+}
+.post-content {
+  color: var(--white);
+  text-align: justify;
+  padding: 10px;
+}
+/* media queries */
 
 @media (max-width: 976px) {
   body {
     flex-direction: column;
   }
-  .show-data {
-    border-top: 2px solid #eee;
-    border-left: none;
+  .user-form {
+    width: 95vw;
+    height: 48vh;
+    padding: 0;
   }
+
+  .user-form input {
+    margin: 0;
+  }
+  .user-form h2 {
+    margin: 0;
+    padding: 0;
+  }
+  .user-form {
+    justify-content: space-evenly;
+  }
+
+  .user-content-box {
+    flex-direction: column;
+  }
+  .user-content-box .new-post,
+  .user-content-box .current-posts {
+    width: 100%;
+    height: 50%;
+  }
+  .user-content-box .new-post {
+    border-bottom: 1px solid black;
+  }
+}
+
+/* extra css */
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: visible;
 }

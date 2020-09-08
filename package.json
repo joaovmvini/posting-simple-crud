@@ -13,11 +13,24 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "nodemon": "^2.0.4",
     "pg": "^8.3.3",
     "reflect-metadata": "^0.1.10",
     "typeorm": "^0.2.25"
   },
+  "nodemonConfig": {
+    "ignore": [
+      ".git",
+      "node_modules"
+    ],
+    "watch": [
+      "src"
+    ],
+    "exec": "npm start",
+    "ext": "ts"
+  },
   "scripts": {
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/index.ts",
+    "start:watch": "nodemon"
   }
 }
