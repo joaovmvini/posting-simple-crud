@@ -15,5 +15,6 @@ app.use(express.static(require("path").resolve("public")));
 app.post("/user", userController.insertUser);
 app.post("/login", userController.login);
 app.post("/posts", postController.insertPost);
+app.post("/post/:id/update", postController.updatePost);
 
 app.listen(3000, () => console.log("listening port 3000..."));

@@ -33,7 +33,12 @@ export function handleUserData(userArea) {
           alert("User already exists in the database");
         } else {
           alert("User succesfully registered in the database");
-          mainRefs.setUser(finalResponse);
+          const storabledUser = {
+            email: finalResponse.email,
+            name: finalResponse.name,
+            id: finalResponse.id,
+          };
+          mainRefs.setUser(storabledUser);
           userArea.changeUserVisibility();
           insertUserDetails(finalResponse);
         }

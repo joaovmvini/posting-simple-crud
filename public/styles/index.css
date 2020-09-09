@@ -65,7 +65,8 @@ input::placeholder {
 }
 
 .user-form input[type="button"],
-.user-content-box .new-post input[type="button"] {
+.user-content-box .new-post input[type="button"],
+#edit-post-btn {
   padding: 8px 30px;
   background: var(--blue);
   border-radius: 2.5px;
@@ -190,6 +191,7 @@ textarea {
 }
 
 .post {
+  position: relative;
   width: 100%;
   min-height: 70px;
   border-bottom: 1px solid #eee;
@@ -211,6 +213,88 @@ textarea {
   text-align: justify;
   padding: 10px;
 }
+
+.post .post-options {
+  visibility: hidden;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  transition-property: visibility, opacity, width, height;
+  transition-duration: 0.15s;
+  transition-delay: 0;
+}
+
+.post:hover .post-options {
+  visibility: visible;
+  position: absolute;
+  width: 60px;
+  right: 10px;
+  top: 10px;
+  height: 25px;
+  background: #292827;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  opacity: 0.8;
+}
+
+.post:hover .delete-post,
+.post:hover .update-post {
+  width: 15px;
+  height: 15px;
+}
+.delete-post,
+.update-post {
+  width: 0px;
+  height: 0px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.post .delete-post {
+  background: red;
+}
+.post .update-post {
+  background: var(--white);
+}
+
+/* overlay input style */
+
+.overlay-input {
+  width: 100vw;
+  height: 100vh;
+  min-height: 300px;
+  min-width: 260px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.overlay-input h2 {
+  font-size: 38px;
+  font-weight: bolder;
+}
+.overlay-input div {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+.overlay-input div input {
+  min-width: 300px;
+  min-height: 25px;
+}
+.overlay-input div textarea {
+  min-width: 300px;
+  min-height: 100px;
+}
+
+.overlay-input div label {
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: var(--white);
+}
+
 /* media queries */
 
 @media (max-width: 976px) {

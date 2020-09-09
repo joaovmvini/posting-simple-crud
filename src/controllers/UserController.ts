@@ -29,14 +29,8 @@ export class UserController {
     const userFromDb = await userRepository.find({
       relations: ["posts"],
       where: { email: email, password: password },
-    }); //await userRepository.findOne({
-    //   email: email,
-    //   password: password,
-    // });
-
+    });
     const error = { status: 404 };
-
-    // const userPosts = await userRepository.find({ relations: ["posts"], where: { id: userFromDb.id }});
 
     return !userFromDb.length ? res.send(error) : res.send(userFromDb[0]);
   }

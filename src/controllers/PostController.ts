@@ -7,7 +7,6 @@ export class PostController {
     const userRepository = getConnection("default").getRepository(User);
     const postRepository = getConnection("default").getRepository(Post);
     const { title, content, user } = req.body;
-    console.log("user:", user);
     const currentUser = await userRepository.findOne({ id: user.id });
     const post = new Post();
 
@@ -18,5 +17,24 @@ export class PostController {
     const updatedPost = await postRepository.save(post);
 
     return res.send(updatedPost);
+  }
+
+  async updatePost(req, res) {
+    const userRepository = getConnection("default").getRepository(User);
+    const postRepository = getConnection("default").getRepository(Post);
+
+    const { id } = req.params;
+    const { title, content, user } = req.body;
+
+    const currentPost = await postRepository.findOne(id);
+    const currentUser = await userRepository.findOne(user.id);
+
+    currentPost.title = title;
+    currentPost.content = content;
+    currentPost.user = currentUser;
+
+    await postRepository.save(currentPost);
+
+    return res.send(currentPost);
   }
 }

@@ -1,7 +1,9 @@
 export const mainClasses = {
   userArea: "show-data",
+  editArea: "overlay-input",
 };
 export const mainRefs = {
+  editArea: document.querySelector(".overlay-input"),
   form: document.getElementsByTagName("form")[0],
   userArea: document.getElementsByClassName(mainClasses.userArea)[0],
   loginArea: document.getElementsByClassName("login")[0],
