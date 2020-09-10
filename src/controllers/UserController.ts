@@ -32,6 +32,8 @@ export class UserController {
     });
     const error = { status: 404 };
 
-    return !userFromDb.length ? res.send(error) : res.send(userFromDb[0]);
+    return !userFromDb.length
+      ? res.status(404).send(error)
+      : res.send(userFromDb[0]);
   }
 }

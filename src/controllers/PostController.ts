@@ -26,14 +26,29 @@ export class PostController {
     const { id } = req.params;
     const { title, content, user } = req.body;
 
+    if (title.length && content.length) {
+      const currentPost = await postRepository.findOne(id);
+      const currentUser = await userRepository.findOne(user.id);
+
+      currentPost.title = title;
+      currentPost.content = content;
+      currentPost.user = currentUser;
+
+      await postRepository.save(currentPost);
+
+      return res.send(currentPost);
+    }
+    return res.status(406).send({ error: "please fill all fields correctly" });
+  }
+
+  async deletePost(req, res) {
+    const postRepository = getConnection("default").getRepository(Post);
+
+    const { id } = req.params;
+
     const currentPost = await postRepository.findOne(id);
-    const currentUser = await userRepository.findOne(user.id);
 
-    currentPost.title = title;
-    currentPost.content = content;
-    currentPost.user = currentUser;
-
-    await postRepository.save(currentPost);
+    await postRepository.remove(currentPost);
 
     return res.send(currentPost);
   }

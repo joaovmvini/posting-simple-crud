@@ -54,7 +54,6 @@ body {
   width: 250px;
   outline: none;
   text-decoration: none;
-  min-width: 100px;
   padding: 5px 0px;
   margin-bottom: 15px;
 }
@@ -66,7 +65,8 @@ input::placeholder {
 
 .user-form input[type="button"],
 .user-content-box .new-post input[type="button"],
-#edit-post-btn {
+#edit-post-btn,
+.delete-btn-box input {
   padding: 8px 30px;
   background: var(--blue);
   border-radius: 2.5px;
@@ -215,42 +215,32 @@ textarea {
 }
 
 .post .post-options {
-  visibility: hidden;
-  opacity: 0;
-  width: 0;
-  height: 0;
-  transition-property: visibility, opacity, width, height;
-  transition-duration: 0.15s;
-  transition-delay: 0;
-}
-
-.post:hover .post-options {
-  visibility: visible;
   position: absolute;
   width: 60px;
   right: 10px;
   top: 10px;
   height: 25px;
+  opacity: 0;
   background: #292827;
   border-radius: 25px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  opacity: 0.8;
+  transition: opacity ease-in 0.1s;
 }
 
-.post:hover .delete-post,
-.post:hover .update-post {
+.post:hover .post-options {
+  opacity: 1;
+}
+
+.post .delete-post,
+.post .update-post {
   width: 15px;
   height: 15px;
-}
-.delete-post,
-.update-post {
-  width: 0px;
-  height: 0px;
-  border-radius: 50%;
   cursor: pointer;
+  border-radius: 50%;
 }
+
 .post .delete-post {
   background: red;
 }
@@ -295,6 +285,46 @@ textarea {
   color: var(--white);
 }
 
+/* delete confirmation */
+
+#delete-confirmation {
+  position: absolute;
+  text-align: center;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  height: 20px;
+  background: var(--blue);
+  display: flex;
+  min-height: 180px;
+  min-width: 200px;
+  width: 300px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.delete-text {
+  max-width: 250px;
+  text-align: center;
+}
+.delete-btn-box {
+  margin-top: 15px;
+}
+.delete-btn-box input:first-child {
+  background: #ec0101;
+  margin-right: 15px;
+}
+.delete-btn-box input:last-child {
+  background: #0cb837;
+}
+#delete-confirmation span {
+  font-weight: 600;
+  color: var(--white);
+}
+
 /* media queries */
 
 @media (max-width: 976px) {
@@ -329,6 +359,9 @@ textarea {
   .user-content-box .new-post {
     border-bottom: 1px solid black;
   }
+  .heading-span {
+    margin-bottom: 0;
+  }
 }
 
 /* extra css */
@@ -339,4 +372,8 @@ textarea {
 
 .visible {
   display: visible;
+}
+
+.opacity {
+  opacity: 0.5;
 }

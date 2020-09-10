@@ -1,5 +1,18 @@
 import { mainRefs, mainClasses } from "./refs.js";
 
+function insertPostListeners(ref, orientation = 0) {
+  /* orientation:
+   *  1: insert post with the bottom-top order
+   *  0: insert post with the top-bottom order
+   */
+  if (orientation) {
+    ref.firstElementChild.addEventListener("click", updatePost);
+    ref.firstElementChild.addEventListener("click", deletePost);
+    return;
+  }
+  ref.lastElementChild.addEventListener("click", updatePost);
+  ref.lastElementChild.addEventListener("click", deletePost);
+}
 export function updateFeed(posts = []) {
   const postHtml = (title, content) => {
     return `<div class="post">
@@ -19,22 +32,22 @@ export function updateFeed(posts = []) {
 
   if (!(posts.constructor === Array)) {
     allPosts.insertAdjacentHTML(
-      "beforeend",
+      "afterbegin",
       postHtml(posts.title, posts.content)
     );
-    allPosts.lastChild.objectData = posts;
-    allPosts.lastChild.addEventListener("click", updatePost);
+    allPosts.firstElementChild.objectData = posts;
+    insertPostListeners(allPosts, 1);
     return;
   }
   posts
-    .sort((a, b) => a.id - b.id)
+    .sort((a, b) => b.id - a.id)
     .forEach((post) => {
       allPosts.insertAdjacentHTML(
         "beforeend",
         postHtml(post.title, post.content)
       );
-      allPosts.lastChild.objectData = post;
-      allPosts.lastChild.addEventListener("click", updatePost);
+      allPosts.lastElementChild.objectData = post;
+      insertPostListeners(allPosts);
     });
 }
 
@@ -60,7 +73,6 @@ function handleUserPost() {
       })
         .then((res) => res.json())
         .then((finalResponse) => {
-          console.log(finalResponse);
           updateFeed(finalResponse);
         });
     });
@@ -72,7 +84,6 @@ export function postHandler() {
 
 function EditPost() {
   function setNewData(obj) {
-    console.log(obj);
     const { titleRef, contentRef, data } = obj;
     titleRef.textContent = data.title;
     contentRef.textContent = data.content;
@@ -92,7 +103,7 @@ function EditPost() {
         content: contentInput.value,
         user: mainRefs.getUser(),
       };
-      fetch(`post/${objectData.id}/update`, {
+      fetch(`post/update/${objectData.id}`, {
         method: "POST",
         body: JSON.stringify(updatedData),
         headers: {
@@ -102,15 +113,19 @@ function EditPost() {
       })
         .then((res) => res.json())
         .then((finalRes) => {
-          setNewData({
-            titleRef: titleRef,
-            contentRef: contentRef,
-            data: finalRes,
-          });
-          unshowEditArea();
-          // clear inputs
-          titleInput.value = "";
-          contentInput.value = "";
+          if (!finalRes.error) {
+            setNewData({
+              titleRef: titleRef,
+              contentRef: contentRef,
+              data: finalRes,
+            });
+            unshowEditArea();
+            // clear inputs
+            titleInput.value = "";
+            contentInput.value = "";
+          } else {
+            alert(finalRes.error);
+          }
         });
     };
   }
@@ -130,6 +145,64 @@ function EditPost() {
   };
 }
 
+function PostDeleter() {
+  function addListeners(e) {
+    const post = e.target.closest(".post");
+    const postObject = post.objectData;
+
+    document.getElementById("delete-btn").onclick = function () {
+      fetch(`post/delete/${postObject.id}`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((finalRes) => {
+          console.log("Deleted post:", finalRes);
+          alert("Your post was been deleted");
+          deleteDisplayedPost(post);
+          destroyConfirmation();
+        });
+    };
+
+    document.getElementById("cancel-delete-btn").onclick = function () {
+      destroyConfirmation();
+    };
+  }
+  function deleteDisplayedPost(post) {
+    return post.remove();
+  }
+  function destroyConfirmation() {
+    mainRefs.userArea.className = mainClasses.userArea;
+    return document.getElementById("delete-confirmation").remove();
+  }
+  function displayDeleteConfirmation() {
+    const confirmationHtml = `<div id="delete-confirmation">
+      <span>Are you sure about delete this post?</span>
+      <div class="delete-btn-box">
+      <input type="button" value="Delete" id="delete-btn">
+      <input type="button" value="Cancel" id="cancel-delete-btn">
+      </div>
+    </div>`;
+    mainRefs.userArea.className = mainClasses.userArea + " opacity";
+    return document.body.insertAdjacentHTML("beforeend", confirmationHtml);
+  }
+
+  return {
+    addListeners,
+    displayDeleteConfirmation,
+  };
+}
+function deletePost(e) {
+  const postDeleter = PostDeleter();
+
+  if (e.target && e.target.className === "delete-post") {
+    postDeleter.displayDeleteConfirmation();
+    postDeleter.addListeners(e);
+  }
+}
+
 function updatePost(e) {
   const editPost = EditPost();
   if (e.target && e.target.className === "update-post") {
@@ -137,5 +210,3 @@ function updatePost(e) {
     editPost.addListeners(e);
   }
 }
-
-export function deletePost() {}
